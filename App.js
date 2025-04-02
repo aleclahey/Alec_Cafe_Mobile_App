@@ -5,6 +5,7 @@ import ProductPage from './pages/ProductPage';
 import ProductOverviewPage from './pages/ProductOverviewPage';
 import HomePage from './pages/HomePage';
 import ReviewsPage from './pages/ReviewsPage';
+import LocationPage from './pages/LocationsPage';
 
 const Stack = createStackNavigator();
 
@@ -12,11 +13,14 @@ export default function App() {
   return (
     <NavigationContainer>
     <Stack.Navigator>
+      <Stack.Screen name="LocationsPage" component={LocationPage} />
+
       <Stack.Screen name="ProductPage" component={ProductPage} />
       <Stack.Screen name="ProductOverviewPage" component={ProductOverviewPage} />
       <Stack.Screen name="ReviewsPage" component={ReviewsPage} />
 
       <Stack.Screen name="HomePage" component={HomePage} />
+
 
     </Stack.Navigator>
   </NavigationContainer>  );

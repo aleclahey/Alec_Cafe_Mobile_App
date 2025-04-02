@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, FlatList, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context'; // Import SafeAreaProvider
-
+import * as MailComposer from 'expo-mail-composer';
 import { Ionicons } from '@expo/vector-icons';
 import Footer from '../components/Footer';
 import AppHeader from '../components/Header';
@@ -10,7 +10,21 @@ import AppHeader from '../components/Header';
 
 const HomePage = () => {
 
+    const sendMessageWithEmail = async () => {
+        const isAvailable = await MailComposer.isAvailableAsync();
+        
+        if (isAvailable) {
+          const options = {
+            recipients: ['a_lahey150623@fanshaweonline.ca'],
+            subject: 'Customer from Alec Cafe Website',
+            body: 'Hello Alec Lahey,',
+          };
     
+          MailComposer.composeAsync(options).then((result) => console.log(result.status));
+        } else {
+          console.log("Email is not available on this device");
+        }
+      }
 
     const image = 'https://images.unsplash.com/photo-1511018556340-d16986a1c194?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
@@ -34,7 +48,8 @@ const HomePage = () => {
                     <Text style={styles.description}>We provide exceptional services. Description Here.</Text>
                 </View>
 
-                <TouchableOpacity style={styles.contactButton}>
+                <TouchableOpacity style={styles.contactButton}
+                onPress={sendMessageWithEmail()}>
                     <Text style={styles.contactText}>Contact Us!</Text>
                 </TouchableOpacity>
 

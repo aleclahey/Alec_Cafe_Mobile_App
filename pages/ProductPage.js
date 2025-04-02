@@ -1,5 +1,6 @@
 import React, { useState } from 'react'; // Import useState
 import { View, Text, TextInput, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 import { SafeAreaProvider } from 'react-native-safe-area-context'; 
 import { useNavigation } from '@react-navigation/native';
 
@@ -32,6 +33,8 @@ const ProductPage = () => {
     { id: '11', name: 'Product name', price: '$10.99', category: categories[1], image: 'https://images.unsplash.com/photo-1677740929617-e8d3679f6ad1?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
     { id: '12', name: 'Product name', price: '$10.99', category: categories[1], image: 'https://images.unsplash.com/photo-1595904567075-f143cbe1f0c8?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
   ];
+
+  const [searchValue, setSearchValue] = useState("");
 
   // State for filtered products
   const [showProducts, setShowProducts] = useState(products);
@@ -67,53 +70,56 @@ const ProductPage = () => {
     }
   };
 
-    return (
-    <View style={styles.container}>
-      <AppHeader/>
+// Modify the ProductPage component structure
+return (
+  <View style={styles.container}>
+    <AppHeader/>
+    <SearchBar
+    placeholder="Type Here..."
+    onChangeText={setSearchValue}
+    value={searchValue}
+    lightTheme
+    ></SearchBar>
+    
+    {/* Categories */}
+    <FlatList
+      horizontal
+      data={categories}
+      keyExtractor={(item, index) => index.toString()}
+      renderItem={({ item, index }) => (
+        <TouchableOpacity style={styles.categoryButton} onPress={() => sortProducts(index)}>
+          <Image source={{ uri: categoryImages[index] }} style={styles.categoryImage} />
+          <Text style={styles.categoryText}>{item}</Text>
+        </TouchableOpacity>
+      )}
+      showsHorizontalScrollIndicator={false}
+      style={styles.categoryList}
+    />
 
-      {/* Categories */}
-      <FlatList
-        horizontal
-        data={categories}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <TouchableOpacity style={styles.categoryButton} onPress={() => sortProducts(index)}>
-            <Image source={{ uri: categoryImages[index] }} style={styles.categoryImage} />
-            <Text>{item}</Text>
-          </TouchableOpacity>
-        )}
-        showsHorizontalScrollIndicator={false}
-        style={styles.categoryList}
-      />
-
-      {/* Product Grid */}
-      <Text>Menu</Text>
-      <FlatList
-        data={showProducts}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        renderItem={({ item }) => (
-          <>
-          <TouchableOpacity 
+ 
+    {/* Menu title */}
+    <Text style={styles.menuTitle}>Menu</Text>
+    
+    {/* Product Grid */}
+    <FlatList
+      data={showProducts}
+      keyExtractor={(item) => item.id}
+      numColumns={2}
+      renderItem={({ item }) => (
+        <TouchableOpacity 
           style={styles.productCard}
-          onPress={() =>
-            navigation.navigate('ProductOverviewPage', { product: item })
-          }>
+          onPress={() => navigation.navigate('ProductOverviewPage', { product: item })}>
+          <Image source={{ uri: item.image }} style={styles.productImage} />
+          <Text style={styles.productName}>{item.name}</Text>
+          <Text style={styles.productPrice}>{item.price}</Text>
+        </TouchableOpacity>
+      )}
+      contentContainerStyle={styles.productList}
+    />
 
-            <Image source={{ uri: item.image }} style={styles.productImage} />
-            <Text>{item.name}</Text>
-            <Text>{item.price}</Text>
-
-          </TouchableOpacity>
-          </>
-        )}
-        contentContainerStyle={styles.productList}
-        key={numColumns} // Key prop forces a re-render when numColumns changes
-      />
-
-      <Footer />
-    </View>
-  );
+    <Footer />
+  </View>
+);
 };
 
 export default ProductPage;
@@ -121,51 +127,60 @@ export default ProductPage;
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
+    flex: 1,
     backgroundColor: '#fff',
-    //paddingVertical: 16,
-    //margin:20
   },
   categoryList: {
-    marginTop: 30,
-    //marginBottom: 16,
-    height:175,
+    marginTop: 10,
+    paddingBottom: 50,
     paddingHorizontal: 10,
+    height: 250, // Set a fixed height for the category list
   },
   categoryButton: {
     alignItems: 'center',
     marginRight: 16,
+    width: 100, // Smaller images
+    height: 100, // Smaller images
+    borderRadius: 50,
   },
   categoryImage: {
-    width: 100,
-    height: 100,
+    width: 100, // Smaller images
+    height: 100, // Smaller images
     borderRadius: 50,
-    //marginBottom: 5,
+    marginBottom: 5,
   },
   categoryText: {
     fontSize: 14,
     color: '#333',
   },
+  menuTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginHorizontal: 16,
+    marginTop: 5,
+    marginBottom: 5,
+  },
   productList: {
-    paddingHorizontal: 10,
-    paddingBottom:50
+    paddingHorizontal: 8,
+    paddingBottom: 20,
   },
   productCard: {
     flex: 1,
     margin: 8,
     backgroundColor: '#fff',
     elevation: 1,
+    overflow: 'hidden',
     alignItems: 'center',
     padding: 10,
   },
   productImage: {
-    width: 175,
-    height: 175,
-    borderRadius: 2,
+    width: '100%',
+    height: 150,
+    borderRadius: 4,
   },
   productName: {
     marginTop: 8,
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -174,9 +189,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#555',
   },
-  header:{
-    marginTop:50
-  }
-  
-
 });

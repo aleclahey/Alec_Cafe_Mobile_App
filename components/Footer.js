@@ -1,17 +1,22 @@
 import React from 'react';
 import { View, Text, TextInput, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+
 
 const Footer = () =>{
+  const navigation = useNavigation();
 
     return(
         <View>
         {/* Bottom Navigation */}
               <View style={styles.bottomNav}>
-                <TouchableOpacity style={styles.navButton}>
+                <TouchableOpacity style={styles.navButton}
+                onPress={() => navigation.navigate('HomePage')}>
                   <Ionicons name="home" size={24} color="black" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.navButton}>
+                <TouchableOpacity style={styles.navButton}
+                onPress={() => navigation.navigate('ProductPage')}>
                   <Ionicons name="menu" size={24} color="black" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.navButton}>

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, Image, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, ScrollView,Alert} from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context'; 
 import Footer from '../components/Footer';
 import AppHeader from '../components/Header';
 import * as ImagePicker from 'expo-image-picker'; // Import the image picker
 
-const ReviewsPage = () => {
+const ReviewsPage = ({ route }) => {
+
+    const { product } = route.params; // Get the product passed as a parameter
     // Sample reviews
     const initialReviews = [
         { id: '1', name: 'John Doe', review: 'Amazing place, would visit again!' },
@@ -31,8 +33,11 @@ const ReviewsPage = () => {
             setNewReview('');
             setNewName('');
             setSelectedImage(null); // Clear the image after submitting
+
+            //Send a notification here
+            //Thanks for writing a review! As a thank you, receive 30% off your next visit...
         } else {
-            alert('Please fill in both fields!');
+            Alert.alert('Oops!','Please fill your name and review.');
         }
     };
 
@@ -41,7 +46,7 @@ const ReviewsPage = () => {
         // Request permission to access the media library
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (permissionResult.granted === false) {
-            alert('Permission to access media library is required!');
+            Alert.alert('Error!','Permission to access media library is required. Edit permission to upload an image.');
             return;
         }
 
@@ -53,31 +58,29 @@ const ReviewsPage = () => {
             quality: 1,
         });
 
-        if (!pickerResult.cancelled) {
-            setSelectedImage(pickerResult.uri); // Save the selected image URI
+        if (!pickerResult.canceled && pickerResult.assets && pickerResult.assets.length > 0) {
+            setSelectedImage(pickerResult.assets[0].uri);
         }
     };
 
     return (
-        <SafeAreaProvider>
+        <SafeAreaProvider style={styles.container}>
             <AppHeader />
             <ScrollView style={styles.container}>
-                <View style={styles.section}>
-                    <Text style={styles.title}>Customer Reviews</Text>
+                <View style={styles.titleSection}>
+                    <Text style={styles.title}>Reviews for {product.name}</Text>
                 </View>
 
-                <FlatList
-                    data={reviews}
-                    renderItem={({ item }) => (
-                        <View style={styles.reviewCard}>
+                {/* Loop through the reviews array to display all reviews */}
+                <View style={styles.reviewsList}>
+                    {reviews.map(item => (
+                        <View key={item.id} style={styles.reviewCard}>
                             {item.image && <Image source={{ uri: item.image }} style={styles.reviewImage} />}
                             <Text style={styles.reviewName}>{item.name}</Text>
                             <Text style={styles.reviewText}>{item.review}</Text>
                         </View>
-                    )}
-                    keyExtractor={item => item.id}
-                    style={styles.reviewsList}
-                />
+                    ))}
+                </View>
 
                 <View style={styles.section}>
                     <Text style={styles.subtitle}>Leave a Review</Text>
@@ -98,10 +101,10 @@ const ReviewsPage = () => {
 
                     {/* Button to pick an image */}
                     <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
-                        <Text style={styles.imageButtonText}>Pick an Image</Text>
+                        <Text style={styles.imageButtonText}>Upload an Image</Text>
                     </TouchableOpacity>
 
-                    {/* Display selected image */}
+                    {/* Display selected image below the review text input */}
                     {selectedImage && (
                         <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
                     )}
@@ -123,12 +126,16 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
     section: {
+        marginTop: 10,
         marginBottom: 20,
         padding: 16,
         borderWidth: 1,
         borderColor: '#ddd',
         borderRadius: 8,
         backgroundColor: '#f9f9f9',
+    },
+    titleSection:{
+        paddingTop:20
     },
     title: {
         fontSize: 24,
@@ -179,7 +186,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'top',
     },
     submitButton: {
-        backgroundColor: '#4CAF50',
+        backgroundColor: '#000',
         paddingVertical: 12,
         borderRadius: 8,
         alignItems: 'center',
@@ -190,16 +197,16 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     imageButton: {
-        backgroundColor: '#007BFF',
-        paddingVertical: 12,
+        backgroundColor: '#899499',
+        paddingVertical: 2,
         borderRadius: 8,
         alignItems: 'center',
         marginBottom: 10,
+        width:150
     },
     imageButtonText: {
         color: '#fff',
         fontSize: 18,
-        fontWeight: 'bold',
     },
     selectedImage: {
         width: 100,

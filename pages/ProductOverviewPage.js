@@ -10,7 +10,7 @@ const ProductOverviewPage = ({ route }) => {
 
   const navigation = useNavigation();
     
-  const { product } = route.params; // Get the product passed as a parameter
+  const { product } = route.params;
 
   return (
     <SafeAreaProvider>
@@ -31,7 +31,7 @@ const ProductOverviewPage = ({ route }) => {
             <Text style={styles.productPrice}>{product.price}</Text>
 
             <TouchableOpacity style={styles.reviewButton}
-            onPress={() => navigation.navigate('ReviewsPage') }
+            onPress={() => navigation.navigate('ReviewsPage', { product: product }) }
             >
               <Text style={styles.reviewButtonText}>Read Reviews</Text>
             </TouchableOpacity>
@@ -47,7 +47,7 @@ const ProductOverviewPage = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#fff',
   },
   scrollContent: {
     padding: 16,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   productDetailsContainer: {
     padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '#f9f9f9',
     borderRadius: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
