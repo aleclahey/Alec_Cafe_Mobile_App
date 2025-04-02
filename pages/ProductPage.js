@@ -132,9 +132,9 @@ const styles = StyleSheet.create({
   },
   categoryList: {
     marginTop: 10,
-    paddingBottom: 50,
+    //paddingBottom: 50,
     paddingHorizontal: 10,
-    height: 250, // Set a fixed height for the category list
+    height: 300
   },
   categoryButton: {
     alignItems: 'center',

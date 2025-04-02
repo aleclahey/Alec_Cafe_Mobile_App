@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
       //flex: 1,
       //backgroundColor: '#000000 ',
       //paddingHorizontal: 16,
-      //marginTop:100
+      //marginTop:100,
     },
     bottomNav: {
         flexDirection: 'row',

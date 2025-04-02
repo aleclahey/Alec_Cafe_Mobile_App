@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Fontisto from '@expo/vector-icons/Fontisto';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -20,7 +21,12 @@ const Footer = () =>{
                   <Ionicons name="menu" size={24} color="black" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.navButton}>
-                  <Ionicons name="cart" size={24} color="black" />
+                  <Ionicons name="location" size={24} color="black"
+                  onPress={() => navigation.navigate('LocationsPage')} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.navButton}>
+                  <Fontisto name="date" size={24} color="black"
+                  onPress={() => navigation.navigate('ReservationPage')} />
                 </TouchableOpacity>
               </View>
         </View>

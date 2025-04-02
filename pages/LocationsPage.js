@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity,ScrollView } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 
@@ -79,10 +79,13 @@ const LocationsPage = () => {
 
   if (loading) {
     return (
-      <View style={styles.centered}>
+      <ScrollView  style={styles.container}>
+      {/* <View> */}
         <ActivityIndicator size="large" />
         <Text>Loading your location...</Text>
-      </View>
+      {/* </View> */}
+      <Footer />
+      </ScrollView>
     );
   }
 
@@ -144,6 +147,7 @@ const LocationsPage = () => {
       />
 
       <Footer />
+
     </View>
   );
 };
