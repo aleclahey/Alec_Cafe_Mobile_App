@@ -18,16 +18,20 @@ const ProductOverviewPage = ({ route }) => {
         <AppHeader />
 
         <ScrollView contentContainerStyle={styles.scrollContent}>
-            <View>
-            <Text style={styles.productName}>{product.name}</Text>
-            </View>
+           
           <TouchableOpacity style={styles.imageContainer}>
+            
             <Image source={{ uri: product.image }} style={styles.productImage} />
+            
           </TouchableOpacity>
+
+          <View>
+              <Text style={styles.productName}>{product.name}</Text>
+          </View>
 
           <View style={styles.productDetailsContainer}>
             
-            <Text style={styles.productDescription}>Product Description...</Text>
+            <Text style={styles.productDescription}>{product.description}</Text>
             <Text style={styles.productPrice}>{product.price}</Text>
 
             <TouchableOpacity style={styles.reviewButton}
@@ -77,7 +81,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 8,
-    textAlign:'center'
+    textAlign:'left',
+    paddingLeft:15
   },
   productDescription: {
     fontSize: 16,
