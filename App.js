@@ -8,6 +8,13 @@ import ReviewsPage from './pages/ReviewsPage';
 import LocationPage from './pages/LocationsPage';
 import ReservationsPage from './pages/ReservationsPage';
 
+import { initializeApp } from "firebase/app";
+//import { getAnalytics } from "firebase/analytics";
+import { firebaseConfig } from './data/FirebaseConfig';
+
+const app = initializeApp(firebaseConfig);
+//const analytics = getAnalytics(app);
+
 const Stack = createStackNavigator();
 
 export default function App() {
